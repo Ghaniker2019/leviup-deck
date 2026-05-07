@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Leviup — Manifeste 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2EDE4;
+  --paper-2:#EAE3D5;
+  --paper-3:#E0D7C3;
+  --ink:#0F1815;
+  --ink-2:#2C3833;
+  --ink-3:#5A6660;
+  --ink-verdigris:#2A3A33;
+  --rule:#C5BCA8;
+  --rule-2:#9B9684;
+  --teal:#1A4A42;
+  --teal-2:#2F7366;
+  --teal-abyss:#0B2620;
+  --teal-tint:#D9E5DF;
+  --teal-tint-2:#C2D5CC;
+  --gold:#C9A24C;
+  --gold-leaf:#D9B566;
+  --ember:#D86A3E;
+  --ember-hot:#E8531A;
+  --mute:#6B7570;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow:hidden;background:#0a0c0b;font-family:"Geist",ui-sans-serif,system-ui;color:var(--ink);font-feature-settings:"ss01","ss02","cv11";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+#stage{position:fixed;inset:0;display:grid;place-items:center;background:#0a0c0b;}
+#deck{
+  position:relative;
+  width:min(100vw, calc(100vh * 16/9));
+  aspect-ratio:16/9;
+  max-height:100vh;
+  background:var(--paper);
+  overflow:hidden;
+  box-shadow:0 60px 140px -40px rgba(0,0,0,.6);
+  container-type:inline-size;
+  container-name:slide;
+}
+
+/* paper grain */
+.grain{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.32;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.05  0 0 0 0 0.06  0 0 0 0 0.04  0 0 0 0.5 0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.55'/></svg>");z-index:1}
+
+/* ============== SLIDES — base layout fixed ============== */
+.slide{
+  position:absolute;inset:0;
+  padding: 4.6cqw 6cqw 4cqw;
+  opacity:0;visibility:hidden;
+  transform: translateY(8px);
+  transition: opacity .5s cubic-bezier(.2,.8,.2,1), transform .55s cubic-bezier(.2,.8,.2,1), visibility 0s linear .5s;
+  display:flex;flex-direction:column;
+  z-index:2;
+}
+.slide.is-active{opacity:1;visibility:visible;transform:translateY(0);transition: opacity .55s cubic-bezier(.2,.8,.2,1), transform .65s cubic-bezier(.2,.8,.2,1), visibility 0s linear 0s;z-index:3}
+
+/* chrome top — now flex child, no longer absolute */
+.chrome{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:"Geist Mono",ui-monospace;
+  font-size:.85cqw;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);
+  margin-bottom:2.2cqw;flex-shrink:0;
+}
+.chrome .left,.chrome .right{display:flex;align-items:center;gap:.9cqw}
+.chrome .dot{width:.5cqw;height:.5cqw;border-radius:50%;background:var(--ember-hot)}
+.chrome .num{color:var(--ink)}
+.chrome .rule{flex:1;height:1px;background:var(--rule);margin:0 1.4cqw;align-self:center;opacity:.9;position:relative;overflow:hidden}
+.chrome .rule::after{content:"";position:absolute;inset:0;background:var(--ember);transform:scaleX(0);transform-origin:left}
+.is-active .chrome .rule::after{animation:draw-rule .9s cubic-bezier(.7,0,.2,1) .35s both}
+
+/* main body region — flexible */
+.body-region{flex:1;display:flex;flex-direction:column;min-height:0}
+
+/* foot — now flex child, sticks to bottom */
+.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:"Geist Mono",ui-monospace;
+  font-size:.78cqw;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);
+  margin-top:auto;padding-top:2cqw;flex-shrink:0;
+}
+.foot .brand{display:flex;align-items:center;gap:.7cqw}
+.foot .brand .mark{width:.85cqw;height:.85cqw;border-radius:50%;background:var(--teal-2);box-shadow:inset 0 0 0 .2cqw var(--paper)}
+
+/* shared typography */
+.kicker{font-family:"Geist Mono",ui-monospace;font-size:.95cqw;letter-spacing:.24em;text-transform:uppercase;color:var(--ember);font-weight:500;display:inline-flex;align-items:center;gap:.7cqw}
+.kicker::before{content:"";width:1.6cqw;height:1px;background:var(--ember)}
+.eyebrow{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.disp{font-family:"Fraunces",serif;line-height:.92;letter-spacing:-.02em;color:var(--ink)}
+.disp em{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+
+.lede{
+  font-family:"Fraunces",serif;
+  font-variation-settings:"opsz" 30,"SOFT" 50,"wght" 320;
+  font-size:1.45cqw;line-height:1.45;color:var(--ink-2);max-width:60cqw;
+}
+.lede em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 30,"SOFT" 100,"wght" 300}
+
+.body-txt{font-family:"Geist",sans-serif;font-weight:400;font-size:1.05cqw;line-height:1.55;color:var(--ink-2)}
+.smallcap{font-family:"Geist Mono",ui-monospace;font-size:.85cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.cite{font-family:"Geist Mono",ui-monospace;font-size:.7cqw;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+
+/* ink-rise animation on H1 */
+@keyframes ink-rise{
+  from{clip-path:inset(0 0 100% 0);filter:blur(4px);opacity:.4}
+  to  {clip-path:inset(0 0 0 0);filter:blur(0);opacity:1}
+}
+@keyframes draw-rule{
+  from{transform:scaleX(0);transform-origin:left}
+  to  {transform:scaleX(1);transform-origin:left}
+}
+@keyframes scan-down{
+  0%  {transform:translateY(-30cqw);opacity:0}
+  20% {opacity:.7}
+  80% {opacity:.7}
+  100%{transform:translateY(60cqw);opacity:0}
+}
+@media (prefers-reduced-motion: no-preference){
+  .is-active h1:not(.cover-title), .is-active .vision-h, .is-active .imprint-h{
+    animation: ink-rise .7s cubic-bezier(.2,.7,.15,1) .1s both;
+  }
+}
+
+/* ============================================================ */
+/* SLIDE 01 — COVER : Manifeste                                 */
+/* ============================================================ */
+.s-cover{background:var(--paper)}
+.s-cover .body-region{justify-content:center;position:relative;z-index:3}
+.cover-stamp{
+  display:flex;align-items:center;gap:1.2cqw;
+  font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:auto;
+}
+.cover-stamp .ribbon{
+  background:var(--ink);color:var(--paper);padding:.45cqw .85cqw;letter-spacing:.22em;display:inline-flex;align-items:center;gap:.5cqw;
+}
+.cover-stamp .ribbon b{color:var(--ember-hot);font-weight:500}
+
+.cover-title{
+  font-family:"Fraunces",serif;
+  font-variation-settings:"opsz" 144,"SOFT" 30,"wght" 360;
+  font-size:20cqw;line-height:.86;letter-spacing:-.04em;
+  color:var(--ink);
+}
+.cover-title em{
+  font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280;
+  color:var(--teal);
+}
+.cover-title .dot{color:var(--ember)}
+
+.cover-sub{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:4cqw;align-items:end;
+  margin-top:2.2cqw;
+}
+.cover-sub h2{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"SOFT" 40,"wght" 360;
+  font-size:1.85cqw;line-height:1.25;color:var(--ink-2);max-width:36cqw;font-weight:400;
+}
+.cover-sub h2 em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100,"wght" 320}
+.cover-meta{
+  display:grid;gap:.55cqw;font-family:"Geist Mono",ui-monospace;
+  font-size:.78cqw;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);text-align:right;
+}
+.cover-meta b{color:var(--ink);font-weight:500}
+
+.cover-anat{position:absolute;right:-3cqw;top:6cqw;width:34cqw;opacity:.07;pointer-events:none;color:var(--teal-abyss);z-index:0}
+.cover-scan{
+  position:absolute;right:8cqw;top:0;width:1px;height:24cqw;
+  background:linear-gradient(to bottom, transparent, var(--gold-leaf) 50%, transparent);
+  mix-blend-mode:multiply;opacity:.7;pointer-events:none;z-index:1;
+}
+.is-active .cover-scan{animation: scan-down 8s ease-in-out infinite}
+
+/* ============================================================ */
+/* SLIDE 02 — POURQUOI                                          */
+/* ============================================================ */
+.s-why .body-region{display:grid;grid-template-columns:1.05fr 1fr;gap:4.5cqw;align-items:start}
+.s-why h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4.4cqw;line-height:.98;letter-spacing:-.025em;color:var(--ink);margin-top:.5cqw;
+}
+.s-why h1 em{font-style:italic;color:var(--ember);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-why .lede{margin-top:1.6cqw;max-width:34cqw}
+.why-anat{position:absolute;right:-4cqw;bottom:-3cqw;width:24cqw;opacity:.08;color:var(--teal);pointer-events:none}
+.why-list{list-style:none;display:grid;gap:1.1cqw}
+.why-list li{
+  display:grid;grid-template-columns:auto 1fr;gap:1.4cqw;align-items:baseline;
+  padding-bottom:1.1cqw;border-bottom:1px dashed var(--ink-verdigris);opacity:.95;
+}
+.why-list li:last-child{border-bottom:none}
+.why-list .num{font-family:"Geist Mono",ui-monospace;font-size:.85cqw;color:var(--ember);letter-spacing:.18em}
+.why-list .txt{font-family:"Geist",sans-serif;font-size:1.1cqw;line-height:1.5;color:var(--ink-2)}
+.why-list .txt b{color:var(--ink);font-weight:500}
+.why-list .txt em{color:var(--teal-2);font-style:italic;font-family:"Fraunces";font-variation-settings:"opsz" 30}
+
+/* ============================================================ */
+/* SLIDE 03 — RÉPONSE                                           */
+/* ============================================================ */
+.s-resp h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:5.4cqw;line-height:.95;letter-spacing:-.025em;color:var(--ink);
+}
+.s-resp h1 em{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-resp .lede{margin-top:1.4cqw;margin-bottom:2.4cqw}
+.three-col{display:grid;grid-template-columns:repeat(3, 1fr);gap:1.6cqw;flex:1}
+.three-col .card{
+  background:var(--paper-2);border:1px solid var(--rule);
+  padding:1.8cqw 1.6cqw;
+  display:flex;flex-direction:column;gap:.9cqw;position:relative;
+  box-shadow: 0 1px 0 rgba(15,24,21,.04), 0 18px 40px -28px rgba(15,24,21,.16);
+}
+.three-col .card .ix{display:flex;align-items:center;justify-content:space-between}
+.three-col .card .icon{width:2.6cqw;height:2.6cqw;color:var(--teal-2)}
+.three-col .card .label{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--ember)}
+.three-col .card h3{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 420;font-size:1.85cqw;line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.three-col .card h3 em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100,"wght" 380}
+.three-col .card p{font-size:.95cqw;line-height:1.55;color:var(--ink-2)}
+.three-col .card .stat{
+  margin-top:auto;font-family:"Fraunces",serif;
+  font-variation-settings:"opsz" 100,"wght" 380;
+  font-size:1.6cqw;color:var(--teal);
+  display:flex;align-items:baseline;gap:.5cqw;
+}
+.three-col .card .stat .u{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;color:var(--ink-3);letter-spacing:.18em;text-transform:uppercase}
+
+/* ============================================================ */
+/* SLIDE 04 — L'EMPREINTE (HERO chiffres construits)            */
+/* ============================================================ */
+.s-imprint{background:var(--paper)}
+.s-imprint::before{
+  content:""; position:absolute; inset:2.6cqw;
+  border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);
+  pointer-events:none;z-index:0;
+}
+.imprint-anat{position:absolute;left:38cqw;top:50%;transform:translateY(-50%);width:28cqw;opacity:.05;color:var(--teal);pointer-events:none;z-index:0}
+.s-imprint .body-region{position:relative;z-index:2}
+.imprint-h{
+  font-family:"Fraunces",serif;
+  font-variation-settings:"opsz" 144,"SOFT" 30,"wght" 320;
+  font-size:7.4cqw;line-height:.94;letter-spacing:-.03em;color:var(--ink);margin-top:.6cqw;
+}
+.imprint-h .l{display:block}
+.imprint-h .it{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 260}
+.s-imprint .lede{margin-top:1.4cqw;font-family:"Geist Mono",ui-monospace;font-size:.95cqw;line-height:1.55;letter-spacing:.04em;text-transform:none;max-width:42cqw;color:var(--ink-2)}
+.imprint-grid{
+  list-style:none;margin-top:auto;padding:0;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  border-top:1px solid var(--ink);
+}
+.imprint-grid li{
+  padding:.9cqw .8cqw .7cqw 0;
+  border-right:1px solid color-mix(in srgb,var(--ink) 12%,transparent);
+  display:flex;flex-direction:column;gap:.3cqw;
+}
+.imprint-grid li:nth-child(6n){border-right:0}
+.imprint-grid b{
+  font-family:"Fraunces",serif;
+  font-variation-settings:"opsz" 144,"wght" 380;
+  font-size:2.3cqw;color:var(--gold);
+  letter-spacing:-.02em;line-height:1;
+}
+.imprint-grid b i{
+  font-style:normal;color:var(--ember);
+  font-size:.6em;vertical-align:.18em;padding:0 .08em;
+}
+.imprint-grid span{
+  font-family:"Geist Mono",ui-monospace;
+  font-size:.78cqw;letter-spacing:.08em;
+  color:color-mix(in srgb,var(--ink) 65%,transparent);
+  text-transform:lowercase;line-height:1.35;
+}
+
+/* ============================================================ */
+/* SLIDE 05 — GENÈSE (timeline 6 phases)                        */
+/* ============================================================ */
+.s-gen .body-region{display:grid;grid-template-columns:.85fr 1.2fr;gap:4cqw}
+.s-gen h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4cqw;line-height:1;letter-spacing:-.025em;color:var(--ink);
+}
+.s-gen h1 em{font-style:italic;color:var(--ember);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-gen .lede{margin-top:1.4cqw;max-width:30cqw}
+.s-gen .gen-meta{
+  margin-top:2cqw;display:grid;grid-template-columns:1fr 1fr;gap:1cqw;
+  padding:1.4cqw 0;border-top:1px solid var(--ink-verdigris);border-bottom:1px solid var(--ink-verdigris);
+}
+.gen-meta .k{font-family:"Geist Mono",ui-monospace;font-size:.72cqw;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
+.gen-meta .v{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 400;font-size:1.5cqw;color:var(--ink);margin-top:.2cqw}
+.gen-meta .v em{color:var(--gold);font-style:italic;font-variation-settings:"opsz" 60,"SOFT" 100,"wght" 360}
+
+.timeline{position:relative;padding-left:1.4cqw}
+.timeline::before{content:"";position:absolute;left:.4cqw;top:.4cqw;bottom:.4cqw;width:1px;background:var(--rule)}
+.timeline .ev{position:relative;padding-left:1.6cqw;padding-bottom:1.1cqw}
+.timeline .ev:last-child{padding-bottom:0}
+.timeline .ev::before{
+  content:"";position:absolute;left:-.55cqw;top:.45cqw;width:.7cqw;height:.7cqw;border-radius:50%;
+  background:var(--paper);border:2px solid var(--ink);
+}
+.timeline .ev.last::before{background:var(--ember);border-color:var(--ember);box-shadow:0 0 0 .35cqw rgba(216,106,62,.16)}
+.timeline .yr{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.18em;color:var(--ember);font-weight:500;text-transform:uppercase}
+.timeline .ttl{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 460;font-size:1.25cqw;line-height:1.2;color:var(--ink);margin:.2cqw 0 .15cqw}
+.timeline .ttl em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100}
+.timeline .desc{font-size:.85cqw;color:var(--ink-2);line-height:1.4;font-family:"Geist"}
+.timeline .meta{font-family:"Geist Mono",ui-monospace;font-size:.7cqw;letter-spacing:.12em;color:var(--ink-3);margin-top:.25cqw}
+
+/* ============================================================ */
+/* SLIDE 06 — CONTENU                                           */
+/* ============================================================ */
+.s-content h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4.4cqw;line-height:.95;letter-spacing:-.025em;color:var(--ink);
+}
+.s-content h1 em{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-content .lede{margin-top:1cqw;margin-bottom:1.4cqw;font-size:1.2cqw}
+.content-anat{position:absolute;right:-2cqw;bottom:1cqw;width:18cqw;opacity:.07;color:var(--teal);pointer-events:none;z-index:0}
+
+.modules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4cqw;flex:1}
+.module{
+  background:var(--paper-2);border:1px solid var(--rule);padding:1.3cqw 1.2cqw;
+  display:flex;flex-direction:column;gap:.55cqw;
+}
+.module .h{display:flex;align-items:baseline;justify-content:space-between}
+.module .name{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.18em;color:var(--ember);text-transform:uppercase}
+.module .num{font-family:"Fraunces",serif;font-variation-settings:"opsz" 80,"wght" 380;font-size:2.2cqw;color:var(--ink);letter-spacing:-.02em;line-height:1}
+.module .num i{font-style:normal;font-size:.55em;color:var(--ink-3);padding-left:.2em}
+.module h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 460;font-size:1.2cqw;line-height:1.15;color:var(--ink)}
+.module p{font-size:.85cqw;line-height:1.45;color:var(--ink-2)}
+.module .ex{margin-top:auto;font-family:"Geist Mono",ui-monospace;font-size:.7cqw;letter-spacing:.06em;color:var(--ink-3);padding-top:.7cqw;border-top:1px dashed var(--rule)}
+
+.content-quiz{
+  margin-top:1.6cqw;padding:1.4cqw 1.6cqw;background:var(--ink);color:var(--paper);
+  display:grid;grid-template-columns:auto 1fr auto;gap:2cqw;align-items:center;
+}
+.content-quiz .lbl{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.content-quiz .q{font-family:"Fraunces",serif;font-variation-settings:"opsz" 30,"SOFT" 50,"wght" 360;font-size:1.15cqw;color:var(--paper);font-style:italic;line-height:1.4}
+.content-quiz .a{font-family:"Geist Mono",ui-monospace;font-size:.85cqw;color:var(--ember);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+
+/* ============================================================ */
+/* SLIDE 07 — GAMIFICATION                                      */
+/* ============================================================ */
+.s-gam{background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)}
+.s-gam .body-region{display:grid;grid-template-columns:1fr 1fr;gap:4cqw}
+.s-gam h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4.2cqw;line-height:.95;letter-spacing:-.025em;color:var(--ink);
+}
+.s-gam h1 em{font-style:italic;color:var(--ember);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-gam .lede{margin-top:1cqw;max-width:30cqw;font-size:1.15cqw}
+.s-gam .formula{
+  margin-top:1.2cqw;padding:.95cqw 1.2cqw;background:var(--ink);color:var(--paper);
+  font-family:"Geist Mono",ui-monospace;font-size:.85cqw;letter-spacing:.04em;
+  display:flex;flex-direction:column;gap:.3cqw;
+}
+.formula .k{color:var(--gold);font-size:.65cqw;letter-spacing:.2em;text-transform:uppercase}
+.formula code{color:var(--paper);font-size:.9cqw}
+.formula code .em{color:var(--ember-hot)}
+.formula .tot{color:var(--paper-3);font-size:.7cqw;margin-top:.2cqw;line-height:1.5}
+.formula .tot b{color:var(--gold-leaf);font-weight:500}
+
+.tier-stack{display:flex;flex-direction:column;gap:.5cqw;align-self:stretch;justify-content:center}
+.tier-row{
+  display:grid;grid-template-columns:auto 1fr auto;gap:1cqw;align-items:center;
+  padding:.7cqw 1cqw;background:var(--paper);border:1px solid var(--rule);
+  font-family:"Geist Mono",ui-monospace;font-size:.85cqw;
+}
+.tier-row .em{font-size:1.4cqw;line-height:1}
+.tier-row .nm{font-family:"Fraunces",serif;font-variation-settings:"opsz" 30,"wght" 420;font-style:normal;font-size:1.05cqw;color:var(--ink)}
+.tier-row .lvl{font-family:"Geist Mono",ui-monospace;color:var(--ink-3);font-size:.75cqw;letter-spacing:.16em}
+.tier-row.t1{border-left:3px solid #4A9B8E}
+.tier-row.t2{border-left:3px solid #2F7366}
+.tier-row.t3{border-left:3px solid #3498DB}
+.tier-row.t4{border-left:3px solid #F7931E}
+.tier-row.t5{border-left:3px solid #FF6B35}
+.tier-row.t6{border-left:3px solid #D4AF37;background:linear-gradient(90deg, var(--paper) 0%, color-mix(in srgb, #D4AF37 14%, var(--paper)) 100%)}
+
+/* ============================================================ */
+/* SLIDE 08 — COACH                                             */
+/* ============================================================ */
+.s-coach h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:5.2cqw;line-height:.95;letter-spacing:-.025em;color:var(--ink);
+}
+.s-coach h1 em{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-coach .lede{margin-top:1.2cqw;margin-bottom:2.2cqw;max-width:54cqw}
+.coach-anat{position:absolute;left:-3cqw;top:18cqw;width:20cqw;opacity:.07;color:var(--teal);pointer-events:none;z-index:0}
+
+.coach-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:3cqw;flex:1}
+.quotes{display:grid;gap:1cqw;align-content:start}
+.quote{
+  position:relative;padding:1cqw 1.2cqw 1cqw 2.4cqw;
+  border-left:1px solid var(--gold-leaf);
+}
+.quote::before{
+  content:"«";position:absolute;left:.4cqw;top:.2cqw;
+  font-family:"Fraunces",serif;font-size:2.6cqw;color:var(--gold);
+  font-variation-settings:"opsz" 144,"wght" 320;line-height:1;
+}
+.quote p{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 30,"SOFT" 60,"wght" 360;
+  font-size:1.15cqw;line-height:1.45;color:var(--ink);font-style:italic;
+}
+.quote .src{font-family:"Geist Mono",ui-monospace;font-size:.7cqw;color:var(--ink-3);letter-spacing:.14em;margin-top:.4cqw;text-transform:uppercase;font-style:normal}
+
+.coach-stats{display:flex;flex-direction:column;gap:1.2cqw;justify-content:center;align-self:center}
+.coach-stats .item{padding:1cqw 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr;gap:.7cqw .9cqw}
+.coach-stats .item:first-child{border-top:0}
+.coach-stats .k{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.18em;color:var(--ember);text-transform:uppercase;grid-column:1/3}
+.coach-stats .v{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 400;font-size:2cqw;color:var(--ink);line-height:1;letter-spacing:-.02em}
+.coach-stats .v em{color:var(--teal-2);font-style:italic;font-variation-settings:"opsz" 60,"SOFT" 100}
+.coach-stats .d{font-family:"Geist",sans-serif;font-size:.85cqw;color:var(--ink-2);line-height:1.4;align-self:center}
+
+/* ============================================================ */
+/* SLIDE 09 — ARCHITECTURE                                      */
+/* ============================================================ */
+.s-arch{background:var(--teal-abyss);color:var(--paper)}
+.s-arch .grain{opacity:.18}
+.s-arch .chrome,.s-arch .foot{color:var(--paper-3)}
+.s-arch .chrome .num{color:var(--paper)}
+.s-arch .chrome .rule{background:var(--paper-3);opacity:.3}
+.s-arch .foot .brand .mark{background:var(--gold);box-shadow:inset 0 0 0 .2cqw var(--teal-abyss)}
+.s-arch .kicker{color:var(--gold-leaf)}
+.s-arch .kicker::before{background:var(--gold-leaf)}
+.s-arch h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 320;
+  font-size:5cqw;line-height:.95;letter-spacing:-.025em;color:var(--paper);
+}
+.s-arch h1 em{font-style:italic;color:var(--gold);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-arch .lede{margin-top:1.2cqw;color:color-mix(in srgb,var(--paper) 80%, transparent);margin-bottom:2cqw;max-width:54cqw}
+
+.arch-stack{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw;flex:1}
+.arch-card{
+  background:rgba(245,239,228,.04);border:1px solid rgba(217,181,102,.25);
+  padding:1.4cqw 1.4cqw;display:flex;flex-direction:column;gap:.7cqw;
+}
+.arch-card .lay{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.2em;color:var(--gold-leaf);text-transform:uppercase}
+.arch-card h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 420;font-size:1.4cqw;color:var(--paper);line-height:1.15}
+.arch-card h4 em{font-style:italic;color:var(--gold);font-variation-settings:"opsz" 60,"SOFT" 100}
+.arch-card ul{list-style:none;display:grid;gap:.45cqw;font-family:"Geist Mono",ui-monospace;font-size:.85cqw;color:color-mix(in srgb,var(--paper) 78%, transparent);letter-spacing:.04em}
+.arch-card ul li{padding-left:.9cqw;position:relative}
+.arch-card ul li::before{content:"›";position:absolute;left:0;color:var(--ember-hot)}
+.arch-card .stat{
+  margin-top:auto;padding-top:.7cqw;border-top:1px solid rgba(217,181,102,.18);
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 80,"wght" 380;font-size:1.5cqw;color:var(--gold);letter-spacing:-.02em;line-height:1;
+}
+.arch-card .stat span{font-family:"Geist Mono",ui-monospace;font-size:.7cqw;color:var(--paper-3);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:.25cqw}
+
+/* ============================================================ */
+/* SLIDE 10 — LE SOIN                                           */
+/* ============================================================ */
+.s-care h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4.4cqw;line-height:.98;letter-spacing:-.025em;color:var(--ink);
+}
+.s-care h1 em{font-style:italic;color:var(--ember);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-care .lede{margin-top:1.2cqw;max-width:34cqw}
+.care-anat{position:absolute;right:-2cqw;top:6cqw;width:22cqw;opacity:.07;color:var(--teal);pointer-events:none;z-index:0}
+
+.care-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;flex:1;align-content:stretch;grid-auto-rows:1fr}
+.care-cell{padding:1.2cqw 1.3cqw;border-top:2px solid var(--ink);background:var(--paper-2);display:flex;flex-direction:column}
+.care-cell .n{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.2em;color:var(--ember);text-transform:uppercase}
+.care-cell h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 460;font-size:1.3cqw;line-height:1.18;color:var(--ink);margin:.4cqw 0 .35cqw}
+.care-cell h4 em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100}
+.care-cell p{font-size:.92cqw;line-height:1.45;color:var(--ink-2);flex:1}
+.care-cell .stat{margin-top:.6cqw;padding-top:.55cqw;border-top:1px dashed var(--rule);font-family:"Geist Mono",ui-monospace;font-size:.78cqw;color:var(--teal);letter-spacing:.04em}
+
+/* ============================================================ */
+/* SLIDE 11 — COMMUNAUTÉ                                        */
+/* ============================================================ */
+.s-com h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:5.2cqw;line-height:.95;letter-spacing:-.025em;color:var(--ink);
+}
+.s-com h1 em{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-com .lede{margin-top:1.2cqw;margin-bottom:2.2cqw;max-width:60cqw}
+
+.aud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4cqw;flex:1}
+.aud{
+  background:var(--paper);border:1px solid var(--rule);padding:1.4cqw 1.3cqw;
+  display:flex;flex-direction:column;gap:.6cqw;
+}
+.aud .ic{width:2.4cqw;height:2.4cqw;color:var(--teal-2);margin-bottom:.4cqw}
+.aud .who{font-family:"Geist Mono",ui-monospace;font-size:.72cqw;letter-spacing:.2em;color:var(--ember);text-transform:uppercase}
+.aud h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 440;font-size:1.3cqw;line-height:1.15;color:var(--ink)}
+.aud h4 em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100}
+.aud p{font-size:.85cqw;line-height:1.5;color:var(--ink-2)}
+.aud .num{margin-top:auto;padding-top:.6cqw;border-top:1px dashed var(--rule);font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 380;font-size:1.4cqw;color:var(--gold);letter-spacing:-.02em}
+
+/* ============================================================ */
+/* SLIDE 12 — CONCLUSION                                        */
+/* ============================================================ */
+.s-end{background:linear-gradient(180deg,var(--teal-abyss) 0%, #06120F 100%);color:var(--paper)}
+.s-end .grain{opacity:.22}
+.s-end .chrome,.s-end .foot{color:var(--paper-3)}
+.s-end .chrome .num{color:var(--paper)}
+.s-end .chrome .rule{background:var(--paper-3);opacity:.25}
+.s-end .foot .brand .mark{background:var(--gold);box-shadow:inset 0 0 0 .2cqw var(--teal-abyss)}
+.s-end .kicker{color:var(--gold-leaf)}
+.s-end .kicker::before{background:var(--gold-leaf)}
+.end-anat{position:absolute;left:-2cqw;bottom:-3cqw;width:32cqw;opacity:.06;color:var(--gold);pointer-events:none;z-index:0}
+.s-end .body-region{justify-content:center;gap:1.5cqw}
+.end-h{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 30,"wght" 300;
+  font-size:5.4cqw;line-height:.95;letter-spacing:-.03em;color:var(--paper);max-width:88cqw;
+}
+.end-h em{font-style:italic;color:var(--gold);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 260}
+.end-h u{text-decoration:underline;text-decoration-color:var(--ember);text-decoration-thickness:.18cqw;text-underline-offset:1.2cqw}
+
+.end-doors{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw;margin-top:2.6cqw}
+.door{
+  padding:1.4cqw 1.4cqw;border:1px solid rgba(217,181,102,.3);background:rgba(245,239,228,.04);
+  display:flex;flex-direction:column;gap:.5cqw;
+}
+.door .n{font-family:"Geist Mono",ui-monospace;font-size:.72cqw;letter-spacing:.2em;color:var(--gold-leaf);text-transform:uppercase}
+.door h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 420;font-size:1.5cqw;line-height:1.15;color:var(--paper)}
+.door h4 em{font-style:italic;color:var(--gold);font-variation-settings:"opsz" 60,"SOFT" 100}
+.door p{font-size:.85cqw;line-height:1.5;color:color-mix(in srgb,var(--paper) 75%, transparent)}
+
+.end-sign{
+  margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:1.5cqw;border-top:1px solid rgba(217,181,102,.2);
+}
+.end-sign .quote{
+  max-width:42cqw;color:color-mix(in srgb,var(--paper) 80%, transparent);
+  font-family:"Fraunces",serif;font-style:italic;font-size:1.2cqw;line-height:1.45;
+  font-variation-settings:"opsz" 60,"SOFT" 80,"wght" 320;
+}
+.end-sign .signature{font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.22em;color:var(--paper-3);text-transform:uppercase;text-align:right}
+.end-sign .signature b{color:var(--gold);font-weight:500;display:block;margin-top:.3cqw}
+
+/* ============== NAV CONTROLS ============== */
+#progress{position:fixed;left:0;top:0;height:2px;background:var(--ember);width:0%;z-index:101;transition:width .3s ease}
+#controls{
+  position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:14px;
+  background:rgba(15,24,21,.78);backdrop-filter:blur(12px);
+  border:1px solid rgba(245,239,228,.1);
+  padding:8px 14px;border-radius:999px;
+  font-family:"Geist Mono",ui-monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:#EAE3D5;z-index:100;
+}
+#controls button{
+  background:transparent;border:1px solid rgba(245,239,228,.18);color:#EAE3D5;
+  padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  transition:all .2s;
+}
+#controls button:hover{background:rgba(245,239,228,.08);border-color:rgba(245,239,228,.3)}
+#controls .counter{padding:0 8px;color:#C9A24C}
+#controls .title{color:#A9A698;border-left:1px solid rgba(245,239,228,.15);padding-left:14px}
+#hint{position:fixed;left:18px;bottom:18px;font-family:"Geist Mono";font-size:10px;letter-spacing:.18em;color:rgba(234,227,213,.5);text-transform:uppercase;z-index:90;pointer-events:none}
+
+#toc{position:fixed;inset:0;background:rgba(6,12,9,.92);backdrop-filter:blur(8px);display:none;z-index:200;padding:60px 80px;overflow:auto}
+#toc.open{display:block}
+#toc h2{font-family:"Fraunces";color:var(--paper);font-size:48px;margin-bottom:30px;font-variation-settings:"wght" 360}
+#toc ol{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:14px 60px}
+#toc li{
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;cursor:pointer;
+  padding:10px 0;border-bottom:1px dashed rgba(245,239,228,.15);font-family:"Fraunces";color:var(--paper);font-size:24px;
+}
+#toc li:hover{color:var(--gold)}
+#toc li .nm{font-family:"Geist Mono";font-size:13px;color:rgba(234,227,213,.5);letter-spacing:.2em}
+#toc li .ck{font-family:"Geist Mono";font-size:11px;color:var(--ember);letter-spacing:.2em;text-transform:uppercase}
+
+@media (max-width: 760px){#controls{padding:6px 10px}#controls .title{display:none}}
+
+/* ============================================================ */
+/* REAL PRODUCT ASSETS                                          */
+/* ============================================================ */
+.cover-xray{
+  position:absolute;right:-8cqw;top:5cqw;width:46cqw;height:auto;
+  opacity:.55;mix-blend-mode:multiply;pointer-events:none;
+  filter:saturate(.55) contrast(1.05) brightness(1.04);
+  z-index:0;
+}
+.cover-logo{
+  position:absolute;right:6cqw;top:5cqw;width:5cqw;height:auto;
+  z-index:5;mix-blend-mode:multiply;opacity:.95;
+  filter:drop-shadow(0 .4cqw 1cqw rgba(15,24,21,.08));
+}
+.cover-cap{
+  position:absolute;right:6cqw;bottom:8.5cqw;
+  font-family:"Geist Mono",ui-monospace;font-size:.7cqw;letter-spacing:.18em;
+  color:var(--ink-3);text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.3cqw;
+  z-index:4;
+}
+.cover-cap b{color:var(--ember-hot);font-weight:500;letter-spacing:.16em}
+.cover-cap::before{content:"";width:3cqw;height:1px;background:var(--ember);}
+
+/* slide 03 — cabinet image hero */
+.resp-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2.6cqw;flex:1;align-items:center;
+  min-height:0;
+}
+.resp-image{
+  position:relative;display:block;align-self:center;
+}
+.resp-image img{
+  width:100%;max-width:38cqw;height:auto;display:block;margin:0 auto;
+  border:1px solid var(--rule);
+  box-shadow:0 1px 0 rgba(15,24,21,.04), 0 30px 60px -28px rgba(15,24,21,.28);
+}
+.resp-image .cap{
+  position:absolute;top:-.85cqw;left:1cqw;
+  background:var(--paper);padding:0 .7cqw;
+  font-family:"Geist Mono";font-size:.7cqw;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ember);
+}
+.resp-image .pin{
+  position:absolute;width:1.4cqw;height:1.4cqw;border-radius:50%;
+  border:2px solid var(--ember);background:var(--paper);
+  display:grid;place-items:center;
+  font-family:"Geist Mono";font-size:.6cqw;color:var(--ember);font-weight:600;
+  box-shadow:0 0 0 .35cqw rgba(216,106,62,.18);
+}
+.resp-image .pin.p1{top:14%;left:18%}
+.resp-image .pin.p2{top:14%;left:62%}
+.resp-image .pin.p3{top:62%;left:18%}
+.resp-image .pin.p4{top:62%;left:62%}
+.resp-text{display:flex;flex-direction:column;gap:.85cqw}
+.pillar{display:grid;grid-template-columns:auto 1fr;gap:.9cqw;align-items:start;padding-bottom:.85cqw;border-bottom:1px dashed var(--rule)}
+.pillar:last-child{border-bottom:none;padding-bottom:0}
+.pillar .n{
+  width:1.7cqw;height:1.7cqw;border-radius:50%;background:var(--ink);color:var(--paper);
+  font-family:"Geist Mono";font-size:.7cqw;display:grid;place-items:center;flex-shrink:0;
+}
+.pillar h4{font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 440;font-size:1.2cqw;line-height:1.1;color:var(--ink)}
+.pillar h4 em{font-style:italic;color:var(--teal-2);font-variation-settings:"opsz" 60,"SOFT" 100,"wght" 360}
+.pillar p{font-family:"Geist";font-size:.82cqw;line-height:1.45;color:var(--ink-2);margin-top:.2cqw}
+.pillar .stat{font-family:"Geist Mono";font-size:.65cqw;letter-spacing:.14em;color:var(--ember);text-transform:uppercase;margin-top:.3cqw}
+
+/* slide 06 — content with real cabinet image */
+.content-hero-grid{
+  display:grid;grid-template-columns:1fr 1.15fr;gap:2.4cqw;flex:1;align-items:center;
+  min-height:0;
+}
+.content-hero-img{
+  position:relative;align-self:center;
+}
+.content-hero-img img{
+  width:100%;max-width:34cqw;height:auto;display:block;
+  border:1px solid var(--rule);
+  box-shadow:0 1px 0 rgba(15,24,21,.04), 0 26px 50px -26px rgba(15,24,21,.25);
+}
+.content-hero-img .lbl{
+  position:absolute;left:1cqw;bottom:1cqw;
+  background:var(--ink);color:var(--paper);
+  padding:.5cqw .8cqw;
+  font-family:"Geist Mono";font-size:.7cqw;letter-spacing:.18em;text-transform:uppercase;
+}
+.content-hero-img .lbl b{color:var(--gold);font-weight:500}
+.modules-stack{display:grid;grid-template-columns:1fr 1fr;gap:1cqw;align-content:center}
+.modules-stack .module{padding:1cqw 1cqw}
+.modules-stack .module h4{font-size:1.05cqw}
+.modules-stack .module .num{font-size:1.8cqw}
+.modules-stack .module p{font-size:.78cqw;line-height:1.42}
+.modules-stack .module .ex{font-size:.65cqw;padding-top:.5cqw}
+
+/* slide 07 — real tier badges */
+.tier-badges{
+  display:grid;grid-template-columns:1fr;gap:.55cqw;align-content:center;justify-self:stretch;
+}
+.tier-img-wrap{
+  display:grid;grid-template-columns:auto auto 1fr;gap:1cqw;align-items:center;
+  padding:.15cqw 0;
+}
+.tier-img-wrap img{
+  height:3cqw;width:auto;display:block;
+  filter:drop-shadow(0 .4cqw 1cqw rgba(15,24,21,.1));
+}
+.tier-img-wrap .num{
+  font-family:"Geist Mono";font-size:.7cqw;letter-spacing:.16em;color:var(--ink-3);
+  text-transform:uppercase;width:1.5cqw;text-align:right;
+}
+.tier-img-wrap .epithet{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 30,"SOFT" 80,"wght" 320;
+  font-style:italic;font-size:.95cqw;color:var(--ink-3);line-height:1.2;
+}
+
+/* slide 11 — running figure as accent */
+.com-logo{
+  position:absolute;right:5cqw;top:5cqw;width:7cqw;height:auto;
+  z-index:0;opacity:.45;mix-blend-mode:multiply;
+}
+
+/* ============================================================ */
+/* SLIDE 07 — LE QUIZ : 3 phones authentiques                   */
+/* ============================================================ */
+.s-quiz{background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)}
+.s-quiz h1{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50,"wght" 340;
+  font-size:4cqw;line-height:.96;letter-spacing:-.025em;color:var(--ink);
+}
+.s-quiz h1 em{font-style:italic;color:var(--teal);font-variation-settings:"opsz" 144,"SOFT" 100,"wght" 280}
+.s-quiz .lede{margin-top:.9cqw;margin-bottom:1.4cqw;max-width:60cqw;font-size:1.15cqw}
+
+.phones-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;flex:1;align-items:center;min-height:0}
+.phone-real{display:flex;flex-direction:column;align-items:center;gap:.65cqw;min-height:0}
+.phone-frame{
+  width:100%;max-width:13cqw;
+  aspect-ratio: 9 / 19.5;
+  background:#0F1815;border-radius:1.4cqw;
+  padding:.32cqw;
+  box-shadow: 0 1cqw 2cqw -.8cqw rgba(15,24,21,.4), 0 .2cqw .4cqw rgba(15,24,21,.1), inset 0 0 0 .1cqw rgba(255,255,255,.08);
+  position:relative;
+}
+.phone-frame .notch{
+  position:absolute;top:.5cqw;left:50%;transform:translateX(-50%);
+  width:3.2cqw;height:.5cqw;background:#000;border-radius:1cqw;z-index:5;
+}
+.phone-screen{
+  width:100%;height:100%;
+  background:#F8FAF9;border-radius:1.3cqw;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;
+  font-family:"Geist","Inter",ui-sans-serif,system-ui;
+}
+.phone-status{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.4cqw .75cqw .2cqw;font-size:.5cqw;font-weight:600;color:#1A1A1A;
+  font-feature-settings:"tnum";
+}
+.phone-status .icons{display:flex;gap:.18cqw;align-items:center;letter-spacing:-.05em}
+
+/* quiz header */
+.qz-h{
+  display:flex;align-items:center;gap:.5cqw;
+  padding:.4cqw .65cqw .35cqw;background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.qz-back{
+  width:1.3cqw;height:1.3cqw;
+  display:grid;place-items:center;color:#1A1A1A;flex-shrink:0;
+}
+.qz-back svg{width:.85cqw;height:.85cqw}
+.qz-h-center{flex:1;display:flex;flex-direction:column;gap:.05cqw;min-width:0}
+.qz-cat{font-size:.55cqw;color:#2F7366;font-weight:700;letter-spacing:.01em}
+.qz-progress{font-size:.45cqw;color:#1A1A1A;opacity:.55}
+.qz-streak{
+  display:flex;align-items:center;gap:.18cqw;
+  background:rgba(245,158,11,.15);color:#F59E0B;
+  padding:.2cqw .35cqw;border-radius:.45cqw;
+  font-size:.5cqw;font-weight:700;flex-shrink:0;
+}
+.qz-streak svg{width:.55cqw;height:.55cqw;fill:#F59E0B}
+
+.qz-bar{height:.18cqw;background:rgba(47,115,102,.12);overflow:hidden}
+.qz-bar-fill{height:100%;background:#2F7366}
+
+.qz-card{
+  margin:.65cqw .55cqw 0;padding:.75cqw .7cqw;background:#fff;border-radius:.8cqw;
+  box-shadow:0 .15cqw .3cqw rgba(0,0,0,.04);
+  display:flex;flex-direction:column;gap:.4cqw;
+}
+.qz-badge{
+  display:inline-block;align-self:flex-start;
+  padding:.2cqw .4cqw;background:rgba(47,115,102,.15);color:#2F7366;
+  font-size:.42cqw;font-weight:700;border-radius:.4cqw;letter-spacing:.04em;
+}
+.qz-q{font-size:.65cqw;font-weight:700;color:#1A1A1A;line-height:1.32;letter-spacing:-.005em}
+.qz-opts{display:flex;flex-direction:column;gap:.32cqw;margin-top:.1cqw}
+.qz-opt{
+  padding:.5cqw .55cqw;background:#F8F9FA;border:1.5px solid #E8E8E8;
+  border-radius:.5cqw;font-size:.55cqw;color:#1A1A1A;font-weight:500;
+  display:flex;align-items:center;justify-content:space-between;gap:.3cqw;
+}
+.qz-opt.correct{background:#D1F2D9;border-color:#4CAF50;color:#1B5E20;font-weight:700}
+.qz-opt.correct svg{width:.7cqw;height:.7cqw;color:#4CAF50;flex-shrink:0}
+.qz-opt.incorrect{background:#FFEBEE;border-color:#F44336;color:#C62828}
+
+.qz-expl{
+  margin:.5cqw .55cqw 0;padding:.5cqw .6cqw;
+  background:rgba(76,175,80,.08);border-left:2px solid #4CAF50;
+  border-radius:.4cqw;font-size:.5cqw;color:#1B5E20;line-height:1.42;
+}
+.qz-expl b{color:#1B5E20;display:block;font-size:.4cqw;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.18cqw;font-weight:700}
+
+/* result screen */
+.qz-result{
+  flex:1;padding:.7cqw .55cqw .55cqw;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.qz-result .emoji{font-size:1.9cqw;margin-top:.2cqw;line-height:1;filter:drop-shadow(0 .1cqw .15cqw rgba(0,0,0,.1))}
+.qz-result .title{
+  font-family:"Fraunces",serif;font-variation-settings:"opsz" 60,"wght" 480;
+  font-size:.95cqw;color:#1A1A1A;margin-top:.3cqw;
+}
+.qz-result .score-circle{
+  width:3cqw;height:3cqw;border-radius:50%;border:.18cqw solid #2F7366;
+  display:grid;place-items:center;margin-top:.5cqw;background:#fff;
+}
+.qz-result .score{font-family:"Fraunces",serif;font-size:1cqw;font-weight:700;color:#2F7366;letter-spacing:-.02em}
+.qz-result .stats{
+  display:flex;width:100%;justify-content:space-around;align-items:center;
+  margin-top:.55cqw;padding:.4cqw 0;
+  background:rgba(0,0,0,.02);border-radius:.5cqw;
+}
+.qz-result .stat{display:flex;flex-direction:column;align-items:center;gap:.08cqw}
+.qz-result .stat .v{font-size:.7cqw;font-weight:700;color:#1A1A1A}
+.qz-result .stat .v.xp{color:#F59E0B}
+.qz-result .stat .l{font-size:.4cqw;color:#666;letter-spacing:.04em}
+.qz-result .divider{width:1px;align-self:stretch;background:#E0E0E0}
+.qz-result .recap{display:flex;gap:.3cqw;margin-top:.45cqw}
+.qz-result .recap-dot{
+  width:.85cqw;height:.85cqw;border-radius:50%;
+  display:grid;place-items:center;background:#4CAF50;color:#fff;
+}
+.qz-result .recap-dot svg{width:.5cqw;height:.5cqw}
+.qz-result .msg{
+  font-size:.5cqw;color:#1A1A1A;opacity:.78;line-height:1.45;
+  margin-top:.45cqw;padding:0 .15cqw;
+}
+.qz-result .btns{display:flex;gap:.35cqw;margin-top:auto;width:100%;padding-top:.55cqw}
+.qz-result .btn{
+  flex:1;padding:.5cqw .25cqw;border-radius:.55cqw;
+  font-size:.5cqw;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:.2cqw;
+}
+.qz-result .btn-retry{background:rgba(47,115,102,.1);color:#2F7366}
+.qz-result .btn-finish{background:#2F7366;color:#fff}
+.qz-result .btn svg{width:.55cqw;height:.55cqw}
+
+.phone-cap{
+  font-family:"Geist Mono",ui-monospace;font-size:.78cqw;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.phone-cap b{color:var(--ember);font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- ===== SVG SPRITE — anatomical filigrees ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="anat-spine" viewBox="0 0 400 500">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 200 20 C 230 60 170 100 200 140 C 230 180 170 220 200 260 C 230 300 170 340 200 380 C 230 420 200 460 200 490"/>
+        <ellipse cx="200" cy="60" rx="34" ry="14"/>
+        <ellipse cx="200" cy="120" rx="38" ry="14"/>
+        <ellipse cx="200" cy="180" rx="40" ry="14"/>
+        <ellipse cx="200" cy="240" rx="42" ry="14"/>
+        <ellipse cx="200" cy="300" rx="44" ry="14"/>
+        <ellipse cx="200" cy="360" rx="46" ry="14"/>
+        <ellipse cx="200" cy="420" rx="48" ry="14"/>
+        <path d="M 165 130 Q 90 150 70 220" stroke-width="1"/>
+        <path d="M 235 130 Q 310 150 330 220" stroke-width="1"/>
+        <path d="M 158 200 Q 70 230 60 310" stroke-width="1"/>
+        <path d="M 242 200 Q 330 230 340 310" stroke-width="1"/>
+      </g>
+    </symbol>
+    <symbol id="anat-vertebra" viewBox="0 0 400 400">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 130 280 Q 200 320 270 280 Q 285 250 270 220 Q 200 195 130 220 Q 115 250 130 280 Z"/>
+        <path d="M 145 250 Q 200 270 255 250" opacity="0.7"/>
+        <path d="M 135 225 Q 110 215 100 195"/>
+        <path d="M 265 225 Q 290 215 300 195"/>
+        <ellipse cx="80" cy="190" rx="22" ry="14"/>
+        <ellipse cx="320" cy="190" rx="22" ry="14"/>
+        <circle cx="80" cy="190" r="6"/>
+        <circle cx="320" cy="190" r="6"/>
+        <path d="M 100 180 Q 140 140 185 130"/>
+        <path d="M 300 180 Q 260 140 215 130"/>
+        <path d="M 185 130 Q 195 110 188 90"/>
+        <path d="M 215 130 Q 205 110 212 90"/>
+        <path d="M 188 90 Q 200 100 212 90"/>
+        <ellipse cx="200" cy="180" rx="55" ry="40" opacity="0.6"/>
+      </g>
+    </symbol>
+    <symbol id="anat-hand" viewBox="0 0 400 500">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 150 470 L 165 380"/>
+        <path d="M 250 470 L 235 380"/>
+        <ellipse cx="180" cy="360" rx="18" ry="13" transform="rotate(-15 180 360)"/>
+        <ellipse cx="210" cy="355" rx="14" ry="11"/>
+        <ellipse cx="240" cy="360" rx="14" ry="10" transform="rotate(15 240 360)"/>
+        <circle cx="258" cy="370" r="7"/>
+        <ellipse cx="175" cy="335" rx="13" ry="10"/>
+        <ellipse cx="200" cy="332" rx="11" ry="9"/>
+        <ellipse cx="222" cy="330" rx="13" ry="11"/>
+        <ellipse cx="248" cy="335" rx="13" ry="10"/>
+        <path d="M 145 320 L 130 230"/>
+        <path d="M 178 315 L 172 220"/>
+        <path d="M 205 315 L 207 215"/>
+        <path d="M 232 315 L 240 220"/>
+        <path d="M 258 320 L 275 235"/>
+        <path d="M 125 220 L 110 165"/>
+        <path d="M 170 215 L 165 145"/>
+        <path d="M 207 210 L 207 135"/>
+        <path d="M 242 215 L 250 145"/>
+        <path d="M 277 230 L 295 175"/>
+        <path d="M 165 140 L 162 100 L 160 70"/>
+        <path d="M 207 130 L 207 85 L 207 55"/>
+        <path d="M 250 140 L 254 100 L 258 70"/>
+        <path d="M 295 170 L 305 135 L 312 110"/>
+        <path d="M 110 160 L 90 125 L 75 100"/>
+      </g>
+    </symbol>
+    <symbol id="anat-shoulder" viewBox="0 0 400 400">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 60 80 L 280 70 L 300 200 L 240 320 L 130 310 L 70 200 Z"/>
+        <path d="M 75 170 L 275 140"/>
+        <path d="M 90 120 Q 180 100 265 115" opacity="0.6"/>
+        <path d="M 100 220 Q 180 250 270 230" opacity="0.6"/>
+        <path d="M 275 140 Q 320 130 335 155 Q 330 175 305 175"/>
+        <circle cx="320" cy="210" r="42"/>
+        <path d="M 295 248 L 280 360"/>
+        <path d="M 350 250 L 340 360"/>
+        <path d="M 200 145 Q 270 160 310 180"/>
+        <path d="M 200 152 Q 270 167 312 187" opacity="0.5"/>
+        <path d="M 180 240 Q 260 230 305 215" opacity="0.85"/>
+        <path d="M 200 280 Q 260 265 300 245" opacity="0.7"/>
+      </g>
+    </symbol>
+    <symbol id="anat-pelvis" viewBox="0 0 400 500">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 60 130 Q 100 95 170 110 Q 195 130 200 165"/>
+        <path d="M 340 130 Q 300 95 230 110 Q 205 130 200 165"/>
+        <path d="M 90 145 Q 140 180 175 220" opacity="0.7"/>
+        <path d="M 310 145 Q 260 180 225 220" opacity="0.7"/>
+        <path d="M 180 165 L 175 270 Q 200 285 225 270 L 220 165 Z"/>
+        <path d="M 188 195 L 212 195" opacity="0.6"/>
+        <path d="M 187 220 L 213 220" opacity="0.6"/>
+        <path d="M 186 245 L 214 245" opacity="0.6"/>
+        <circle cx="125" cy="265" r="28"/>
+        <circle cx="275" cy="265" r="28"/>
+        <circle cx="125" cy="265" r="14" opacity="0.5"/>
+        <circle cx="275" cy="265" r="14" opacity="0.5"/>
+        <ellipse cx="140" cy="320" rx="28" ry="35"/>
+        <ellipse cx="260" cy="320" rx="28" ry="35"/>
+        <path d="M 185 335 L 215 335"/>
+        <path d="M 110 290 Q 140 380 185 340"/>
+        <path d="M 290 290 Q 260 380 215 340"/>
+        <circle cx="100" cy="275" r="22"/>
+        <circle cx="300" cy="275" r="22"/>
+        <path d="M 80 360 L 95 470"/>
+        <path d="M 110 350 L 120 470"/>
+        <path d="M 320 360 L 305 470"/>
+        <path d="M 290 350 L 280 470"/>
+      </g>
+    </symbol>
+    <symbol id="anat-knee" viewBox="0 0 400 500">
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 180 40 L 175 200"/>
+        <path d="M 240 40 L 245 200"/>
+        <path d="M 175 200 Q 165 240 200 275 Q 260 290 280 250 Q 285 215 245 200"/>
+        <path d="M 130 230 Q 110 255 120 285 Q 145 295 165 280 Q 175 255 160 230 Z"/>
+        <path d="M 145 240 Q 158 260 150 285" opacity="0.6"/>
+        <path d="M 135 230 L 125 100"/>
+        <path d="M 162 228 L 168 100"/>
+        <path d="M 130 290 L 135 360"/>
+        <path d="M 165 290 L 168 360"/>
+        <path d="M 150 320 Q 220 340 285 320"/>
+        <path d="M 195 295 L 215 305 L 195 310 Z"/>
+        <path d="M 270 295 L 250 305 L 270 310 Z"/>
+        <path d="M 220 280 L 245 310" opacity="0.7"/>
+        <path d="M 250 275 L 225 315" opacity="0.7"/>
+        <path d="M 145 360 Q 160 370 175 365"/>
+        <path d="M 155 370 L 170 470"/>
+        <path d="M 215 340 L 225 470"/>
+        <ellipse cx="290" cy="345" rx="18" ry="22"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="progress"></div>
+
+<div id="stage">
+<div id="deck">
+
+<!-- ============ 01 — COVER ============ -->
+<section class="slide s-cover is-active" data-title="Manifeste">
+  <div class="grain"></div>
+  <img class="cover-xray" src="assets/xray.png" alt="" aria-hidden="true">
+  <img class="cover-logo" src="assets/logo.png" alt="Logo Leviup">
+  <div class="cover-scan"></div>
+
+  <div class="body-region">
+    <div class="cover-stamp">
+      <span class="ribbon"><b>●</b> Manifeste · Mai 2026</span>
+      <span>Pas un pitch · une fondation</span>
+    </div>
+
+    <div>
+      <h1 class="cover-title">Leviup<span class="dot">.</span></h1>
+      <div class="cover-sub">
+        <h2>L'outil de formation continue<br>que des <em>kinés</em> ont construit<br>pour leurs pairs.</h2>
+        <div class="cover-meta">
+          <div>Mai 2026</div>
+          <div>Paris · France</div>
+          <div>—</div>
+          <div><b>contact@leviup.fr</b></div>
+          <div>leviup.app</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup · Document confidentiel</span></div>
+    <div>← / → · espace · F plein écran · T sommaire</div>
+  </div>
+</section>
+
+<!-- ============ 02 — POURQUOI ============ -->
+<section class="slide s-why" data-title="Pourquoi">
+  <div class="grain"></div>
+  <svg class="why-anat"><use href="#anat-vertebra"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>02 — Le constat</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">02 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <div class="body-region" style="display:grid;grid-template-columns:1.05fr 1fr;gap:4.5cqw;align-items:start">
+      <div>
+        <span class="kicker">Vu de l'intérieur</span>
+        <h1 style="margin-top:1cqw">La formation continue<br><em>fatigue</em> ceux qu'elle<br>devrait nourrir.</h1>
+        <p class="lede">PDF de 80 pages, webinaires interminables, contenus déconnectés du cabinet réel.</p>
+      </div>
+      <ul class="why-list">
+        <li>
+          <span class="num">/01</span>
+          <span class="txt"><b>Le temps est morcelé</b> entre deux patients. Les formats actuels demandent une heure d'attention continue qu'on n'a <em>jamais</em>.</span>
+        </li>
+        <li>
+          <span class="num">/02</span>
+          <span class="txt"><b>Les contenus sont passifs</b>. On lit, on ferme. Aucune trace de progression, aucune mémorisation active.</span>
+        </li>
+        <li>
+          <span class="num">/03</span>
+          <span class="txt"><b>L'outil est inadapté</b>. Tout est pensé pour le desktop. Le smartphone, qui est dans la blouse, est ignoré.</span>
+        </li>
+        <li>
+          <span class="num">/04</span>
+          <span class="txt"><b>L'installation est solitaire</b>. NGAP, équivalence, RCP, URSSAF — chacun rame seul dans son coin.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>02 / 13 · Le constat</div>
+  </div>
+</section>
+
+<!-- ============ 03 — RÉPONSE ============ -->
+<section class="slide s-resp" data-title="Notre réponse">
+  <div class="grain"></div>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>03 — Notre réponse</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">03 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">L'intention</span>
+    <h1 style="margin-top:1cqw">Un cabinet virtuel<br><em>calme</em> et habité.</h1>
+    <p class="lede">Apprendre, suivre, prendre soin — au même endroit, sans bruit. Sessions de cinq minutes entre deux patients, vouvoiement systématique, hors-ligne natif.</p>
+
+    <div class="resp-grid">
+      <div class="resp-image">
+        <span class="cap">capture · écran d'accueil</span>
+        <img src="assets/cabinet.png" alt="Cabinet virtuel — quatre zones thématiques">
+        <span class="pin p1">1</span>
+        <span class="pin p2">2</span>
+        <span class="pin p3">3</span>
+        <span class="pin p4">4</span>
+      </div>
+
+      <div class="resp-text">
+        <div class="pillar">
+          <span class="n">1</span>
+          <div>
+            <h4>Squelette · <em>équivalence diplôme</em></h4>
+            <p>60 fiches, 5 pays. La démarche DREETS expliquée pas à pas.</p>
+            <div class="stat">— Espagne · Belgique · Portugal · Maroc</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="n">2</span>
+          <div>
+            <h4>Bureau · <em>les logiciels</em></h4>
+            <p>12 outils comparés. Doctolib, Vega, Indy, Maiia, Pennylane, URSSAF…</p>
+            <div class="stat">— prix · fonctions · conseils</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="n">3</span>
+          <div>
+            <h4>Placard · <em>assurances & réseaux</em></h4>
+            <p>24 partenaires triés. RCP, banques, matériel, comptables, syndicats.</p>
+            <div class="stat">— commentés par confrères</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="n">4</span>
+          <div>
+            <h4>Vélo · <em>la pratique</em></h4>
+            <p>75 questions QCM. NGAP, Admin, DREETS, Pratique, Anatomie.</p>
+            <div class="stat">— validation server-side · cap 30 XP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>03 / 13 · Notre réponse</div>
+  </div>
+</section>
+
+<!-- ============ 04 — L'EMPREINTE ============ -->
+<section class="slide s-imprint" data-title="L'empreinte">
+  <div class="grain"></div>
+  <svg class="imprint-anat"><use href="#anat-pelvis"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>04 — L'empreinte</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">04 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">Trois mois · Six phases · Un seul cap</span>
+    <h1 class="imprint-h disp">
+      <span class="l">Ce que pèse</span>
+      <span class="l it">un produit</span>
+      <span class="l">tenu droit.</span>
+    </h1>
+    <p class="lede">Pas une démo. Une fondation — posée ligne après ligne, garde-fou après garde-fou. Du 15 décembre 2025 au 23 février 2026.</p>
+
+    <ul class="imprint-grid">
+      <li><b>18 017</b><span>lignes TypeScript écrites</span></li>
+      <li><b>106</b><span>fichiers tracés en git</span></li>
+      <li><b>27</b><span>commits historisés</span></li>
+      <li><b>17</b><span>composants UI signés</span></li>
+      <li><b>7</b><span>stores Zustand orchestrés</span></li>
+      <li><b>34</b><span>actions persistées</span></li>
+      <li><b>75</b><span>questions de quiz rédigées</span></li>
+      <li><b>16</b><span>fiches pédagogiques tenues</span></li>
+      <li><b>100<i>×</i>6</b><span>niveaux et tiers</span></li>
+      <li><b>11</b><span>migrations Supabase</span></li>
+      <li><b>23</b><span>policies RLS actives</span></li>
+      <li><b>2</b><span>Edge Functions durcies</span></li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>04 / 13 · L'empreinte · code source · 15 déc 2025 → 23 fév 2026</div>
+  </div>
+</section>
+
+<!-- ============ 05 — GENÈSE ============ -->
+<section class="slide s-gen" data-title="Genèse">
+  <div class="grain"></div>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>05 — Genèse</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">05 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <div style="display:grid;grid-template-columns:.85fr 1.2fr;gap:4cqw;flex:1;align-items:start">
+      <div>
+        <span class="kicker">70 jours, six phases</span>
+        <h1 style="margin-top:1cqw">Du <em>brouillon</em><br>au produit<br>qui tient debout.</h1>
+        <p class="lede">Chaque phase a laissé sa trace dans l'historique git. Sécurité, robustesse, accessibilité, audits — six itérations <em>audit-fix</em> documentées.</p>
+        <div class="gen-meta">
+          <div><div class="k">Premier commit</div><div class="v">15 <em>déc.</em> 2025</div></div>
+          <div><div class="k">Dernier durcissement</div><div class="v">23 <em>fév.</em> 2026</div></div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="ev">
+          <div class="yr">Décembre 2025</div>
+          <div class="ttl">On pose les <em>fondations</em></div>
+          <div class="desc">Architecture Expo + Supabase, premiers stores, premier écran.</div>
+          <div class="meta">Initial Komit MVP</div>
+        </div>
+        <div class="ev">
+          <div class="yr">8 → 23 janvier 2026</div>
+          <div class="ttl">Sprint <em>MVP</em> · 21 commits</div>
+          <div class="desc">Les 4 zones du cabinet prennent forme. Tier system, leveling.</div>
+          <div class="meta">9a30680 · MVP complete</div>
+        </div>
+        <div class="ev">
+          <div class="yr">21 février</div>
+          <div class="ttl">Phase 1–4 · sécurité, robustesse, a11y</div>
+          <div class="desc">1 609 insertions sur la sécurité. Vouvoiement systématique. SafeArea sur 12 écrans. 4,2 Mo d'assets économisés.</div>
+          <div class="meta">0884b39 → ad2ad76</div>
+        </div>
+        <div class="ev">
+          <div class="yr">22 février</div>
+          <div class="ttl">Phase 5 · <em>sécurité</em> durcie</div>
+          <div class="desc">RLS DELETE policies, anti-manipulation XP, sanitizers d'inputs, timeout réseau 15 s.</div>
+          <div class="meta">6af6a35 · Deep Security Audit</div>
+        </div>
+        <div class="ev last">
+          <div class="yr">23 février</div>
+          <div class="ttl">Phase 6 · <em>RGPD</em> de bout en bout</div>
+          <div class="desc">Edge Functions <code>award-xp</code> et <code>delete-user</code>. Export JSON portable. Sons embarqués.</div>
+          <div class="meta">4f7a056 · Phase 6 livrée</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>05 / 13 · Genèse</div>
+  </div>
+</section>
+
+<!-- ============ 06 — CONTENU ============ -->
+<section class="slide s-content" data-title="Contenu écrit">
+  <div class="grain"></div>
+  <svg class="content-anat"><use href="#anat-shoulder"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>06 — Contenu écrit</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">06 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">La matière</span>
+    <h1>Du <em>savoir</em> taillé<br>pour le cabinet.</h1>
+    <p class="lede">Sept mille huit cents mots déjà rédigés. Cent un items documentés. Vingt-huit heures de formation à parcourir au rythme du métier.</p>
+
+    <div class="content-hero-grid">
+      <div class="content-hero-img">
+        <img src="assets/cabinet.png" alt="Cabinet — quatre zones illustrées">
+        <span class="lbl"><b>capture</b> · cabinet · 4 zones</span>
+      </div>
+
+      <div class="modules-stack">
+        <div class="module">
+          <div class="h">
+            <span class="name">/ Squelette</span>
+            <span class="num">60<i>fiches</i></span>
+          </div>
+          <h4>Équivalence diplôme</h4>
+          <p>5 pays · démarches DREETS · mesures compensatoires.</p>
+          <div class="ex">~ 4 à 5 h de lecture</div>
+        </div>
+        <div class="module">
+          <div class="h">
+            <span class="name">/ Bureau</span>
+            <span class="num">12<i>logiciels</i></span>
+          </div>
+          <h4>Outils du cabinet</h4>
+          <p>Doctolib, Vega, Indy, Maiia, Pennylane, URSSAF…</p>
+          <div class="ex">~ 2 à 3 h de lecture</div>
+        </div>
+        <div class="module">
+          <div class="h">
+            <span class="name">/ Placard</span>
+            <span class="num">24<i>partenaires</i></span>
+          </div>
+          <h4>Assurances & réseaux</h4>
+          <p>RCP, banques, matériel, comptables, syndicats.</p>
+          <div class="ex">~ 3 à 4 h de lecture</div>
+        </div>
+        <div class="module">
+          <div class="h">
+            <span class="name">/ Vélo</span>
+            <span class="num">75<i>quiz</i></span>
+          </div>
+          <h4>Pratique cotée</h4>
+          <p>NGAP · Admin · DREETS · Pratique · Anatomie.</p>
+          <div class="ex">~ 10 à 15 h d'interaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-quiz">
+      <span class="lbl">Échantillon NGAP</span>
+      <span class="q">« Quel est le code NGAP pour une séance de rééducation d'un membre et de sa racine ? »</span>
+      <span class="a">→ AMK 7</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>06 / 13 · Contenu</div>
+  </div>
+</section>
+
+<!-- ============ 07 — LE QUIZ EN MAIN ============ -->
+<section class="slide s-quiz" data-title="Le quiz">
+  <div class="grain"></div>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>07 — La pratique</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">07 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">La pratique</span>
+    <h1>Trois écrans,<br><em>trois temps</em>.</h1>
+    <p class="lede">Une question. Une réponse vérifiée côté serveur. Un score qui compte. Le quiz Leviup tient en moins de cinq minutes — exactement entre deux patients.</p>
+
+    <div class="phones-row">
+      <!-- Phone 1: Question -->
+      <div class="phone-real">
+        <div class="phone-frame">
+          <div class="notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>09:41</span>
+              <span class="icons">●●● 5G ▮</span>
+            </div>
+            <div class="qz-h">
+              <span class="qz-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </span>
+              <div class="qz-h-center">
+                <span class="qz-cat">NGAP &amp; Cotations</span>
+                <span class="qz-progress">Question 1/3</span>
+              </div>
+              <div class="qz-streak">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7V2z"/></svg>
+                <span>2</span>
+              </div>
+            </div>
+            <div class="qz-bar"><div class="qz-bar-fill" style="width:33%"></div></div>
+            <div class="qz-card">
+              <span class="qz-badge">Question 1</span>
+              <p class="qz-q">Quel est le code NGAP pour une séance de rééducation d'un membre et de sa racine ?</p>
+              <div class="qz-opts">
+                <div class="qz-opt">AMK 7</div>
+                <div class="qz-opt">AMK 8</div>
+                <div class="qz-opt">AMK 9</div>
+                <div class="qz-opt">AMK 10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="phone-cap">/01 · La <b>question</b></span>
+      </div>
+
+      <!-- Phone 2: Answered -->
+      <div class="phone-real">
+        <div class="phone-frame">
+          <div class="notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>09:42</span>
+              <span class="icons">●●● 5G ▮</span>
+            </div>
+            <div class="qz-h">
+              <span class="qz-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </span>
+              <div class="qz-h-center">
+                <span class="qz-cat">NGAP &amp; Cotations</span>
+                <span class="qz-progress">Question 2/3</span>
+              </div>
+              <div class="qz-streak">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7V2z"/></svg>
+                <span>3</span>
+              </div>
+            </div>
+            <div class="qz-bar"><div class="qz-bar-fill" style="width:66%"></div></div>
+            <div class="qz-card">
+              <span class="qz-badge">Question 2</span>
+              <p class="qz-q">L'indemnité forfaitaire de déplacement (IFD) est de combien ?</p>
+              <div class="qz-opts">
+                <div class="qz-opt">2,50 €</div>
+                <div class="qz-opt">4,00 €</div>
+                <div class="qz-opt correct"><span>5,00 €</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="qz-opt">6,00 €</div>
+              </div>
+            </div>
+            <div class="qz-expl">
+              <b>Explication</b>
+              L'IFD est de 5,00 € par déplacement, indépendamment de la distance parcourue.
+            </div>
+          </div>
+        </div>
+        <span class="phone-cap">/02 · La <b>réponse</b></span>
+      </div>
+
+      <!-- Phone 3: Result -->
+      <div class="phone-real">
+        <div class="phone-frame">
+          <div class="notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>09:45</span>
+              <span class="icons">●●● 5G ▮</span>
+            </div>
+            <div class="qz-h">
+              <span class="qz-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </span>
+              <div class="qz-h-center">
+                <span class="qz-cat">NGAP &amp; Cotations</span>
+                <span class="qz-progress">Quiz terminé</span>
+              </div>
+            </div>
+            <div class="qz-result">
+              <span class="emoji">🏆</span>
+              <span class="title">Parfait !</span>
+              <div class="score-circle"><span class="score">3/3</span></div>
+              <div class="stats">
+                <div class="stat"><span class="v">100%</span><span class="l">Réussite</span></div>
+                <div class="divider"></div>
+                <div class="stat"><span class="v xp">+30</span><span class="l">XP gagnés</span></div>
+              </div>
+              <div class="recap">
+                <span class="recap-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+                <span class="recap-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+                <span class="recap-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+              </div>
+              <p class="msg">Vous maîtrisez ce sujet ! Continuez comme ça 🔥</p>
+              <div class="btns">
+                <span class="btn btn-retry">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                  Refaire
+                </span>
+                <span class="btn btn-finish">Terminer →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="phone-cap">/03 · Le <b>score</b></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>07 / 13 · La pratique · validation server-side via Edge Function</div>
+  </div>
+</section>
+
+<!-- ============ 08 — GAMIFICATION ============ -->
+<section class="slide s-gam" data-title="Gamification">
+  <div class="grain"></div>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>08 — Mémorisation</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">08 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4cqw;flex:1;align-items:start">
+      <div>
+        <span class="kicker">Une discipline douce</span>
+        <h1 style="margin-top:1cqw">Apprendre<br>sans <em>infantiliser</em>.</h1>
+        <p class="lede">Six tiers progressifs, dix-huit badges contextuels, un streak quotidien qui casse à minuit. La courbe d'XP est exponentielle douce — chaque niveau coûte un peu plus, jamais brutalement.</p>
+
+        <div class="formula">
+          <span class="k">Formule XP — lib/tierSystem.ts</span>
+          <code>xp(n → n+1) = <span class="em">50</span> × <span class="em">1.08</span><sup>n−1</sup></code>
+          <span class="tot">Niveau 1 → 2 : <b>50 XP</b> · niveau 99 → 100 : <b>2 500 XP</b> · total : <b>~25 000 XP</b></span>
+        </div>
+      </div>
+
+      <div class="tier-badges">
+        <div class="tier-img-wrap">
+          <span class="num">/01</span>
+          <img src="assets/tier-debutant.png" alt="Débutant — niveaux 1 à 15">
+          <span class="epithet">les premiers pas</span>
+        </div>
+        <div class="tier-img-wrap">
+          <span class="num">/02</span>
+          <img src="assets/tier-intermediaire.png" alt="Intermédiaire — niveaux 16 à 30">
+          <span class="epithet">la base posée</span>
+        </div>
+        <div class="tier-img-wrap">
+          <span class="num">/03</span>
+          <img src="assets/tier-avance.png" alt="Avancé — niveaux 31 à 45">
+          <span class="epithet">le geste sûr</span>
+        </div>
+        <div class="tier-img-wrap">
+          <span class="num">/04</span>
+          <img src="assets/tier-expert.png" alt="Expert — niveaux 46 à 60">
+          <span class="epithet">prêt pour l'installation</span>
+        </div>
+        <div class="tier-img-wrap">
+          <span class="num">/05</span>
+          <img src="assets/tier-maitre.png" alt="Maître — niveaux 61 à 75">
+          <span class="epithet">tous les domaines tenus</span>
+        </div>
+        <div class="tier-img-wrap">
+          <span class="num">/06</span>
+          <img src="assets/tier-elite.png" alt="Élite — niveaux 76 à 100">
+          <span class="epithet">le sommet — 25 000 XP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>08 / 13 · Mémorisation · 18 badges · 4 sons embarqués</div>
+  </div>
+</section>
+
+<!-- ============ 08 — COACH ============ -->
+<section class="slide s-coach" data-title="Le coach">
+  <div class="grain"></div>
+  <svg class="coach-anat"><use href="#anat-hand"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>09 — La voix juste</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">09 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">La présence</span>
+    <h1>Une <em>voix juste</em>,<br>jamais une voix de plus.</h1>
+    <p class="lede">Ni gourou, ni chatbot. Un confrère qui vouvoie. Vingt-neuf phrases, écrites une par une dans <code>lib/dialogs.ts</code>, déclenchées au bon moment du parcours.</p>
+
+    <div class="coach-grid">
+      <div class="quotes">
+        <div class="quote">
+          <p>Vous avancez bien ! Chaque étape validée vous rapproche de votre cabinet.</p>
+          <span class="src">— catégorie checklist · mood happy</span>
+        </div>
+        <div class="quote">
+          <p>N'oubliez pas d'assurer votre activité avant l'ouverture officielle.</p>
+          <span class="src">— catégorie cabinet · mood thinking</span>
+        </div>
+        <div class="quote">
+          <p>Rome ne s'est pas faite en un jour... Ni un cabinet !</p>
+          <span class="src">— catégorie motivation · mood excited</span>
+        </div>
+        <div class="quote">
+          <p>Le succès, c'est la somme de petits efforts répétés.</p>
+          <span class="src">— catégorie tips · mood thinking</span>
+        </div>
+      </div>
+
+      <div class="coach-stats">
+        <div class="item">
+          <span class="k">Catégories</span>
+          <span class="v"><em>8</em></span>
+          <span class="d">onboarding · cabinet · modules · quiz · checklist · progress · motivation · tips</span>
+        </div>
+        <div class="item">
+          <span class="k">Humeurs</span>
+          <span class="v"><em>5</em></span>
+          <span class="d">neutral · happy · excited · thinking · sad — chacune avec son icône Lucide.</span>
+        </div>
+        <div class="item">
+          <span class="k">Architecture</span>
+          <span class="v">Scriptée<br><em>LLM-ready</em></span>
+          <span class="d">Corpus déterministe aujourd'hui. Edge Function Supabase prête à brancher demain.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>09 / 13 · La voix juste</div>
+  </div>
+</section>
+
+<!-- ============ 09 — ARCHITECTURE ============ -->
+<section class="slide s-arch" data-title="Architecture">
+  <div class="grain"></div>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>10 — Sous le capot</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">10 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">L'infrastructure</span>
+    <h1>Une stack <em>sobre</em><br>et lisible.</h1>
+    <p class="lede">Choix techniques alignés sur la longévité et l'auditabilité. Tout le code est ouvert à la lecture — rien n'est caché derrière une couche propriétaire.</p>
+
+    <div class="arch-stack">
+      <div class="arch-card">
+        <span class="lay">/ Couche client</span>
+        <h4>Expo + <em>React Native</em></h4>
+        <ul>
+          <li>RN 0.81 · Hermes · New Arch ON</li>
+          <li>Expo Router 6 · typed routes</li>
+          <li>Reanimated 4 · UI thread</li>
+          <li>iOS + Android + Web — un seul code</li>
+          <li>17 composants UI signés main</li>
+        </ul>
+        <div class="stat">3 181<span>lignes de composants</span></div>
+      </div>
+      <div class="arch-card">
+        <span class="lay">/ Couche état</span>
+        <h4>Zustand <em>atomique</em></h4>
+        <ul>
+          <li>7 stores indépendants</li>
+          <li>34 actions exposées</li>
+          <li>Optimistic updates + revert</li>
+          <li>Reset cascade au logout</li>
+          <li>Listeners auth.onAuthStateChange</li>
+        </ul>
+        <div class="stat">1 083<span>lignes d'état orchestré</span></div>
+      </div>
+      <div class="arch-card">
+        <span class="lay">/ Couche données</span>
+        <h4>Supabase <em>UE</em></h4>
+        <ul>
+          <li>11 migrations versionnées</li>
+          <li>7 tables · 23 RLS policies</li>
+          <li>10 index dont 1 GIN JSONB</li>
+          <li>2 Edge Functions Deno</li>
+          <li>UNIQUE quotidien anti-triche</li>
+        </ul>
+        <div class="stat">100 %<span>RLS sur toutes les tables</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>10 / 13 · Architecture</div>
+  </div>
+</section>
+
+<!-- ============ 10 — LE SOIN ============ -->
+<section class="slide s-care" data-title="Le soin">
+  <div class="grain"></div>
+  <svg class="care-anat"><use href="#anat-knee"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>11 — L'attention</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">11 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">Le détail comme respect</span>
+    <h1 style="margin-top:1cqw;max-width:64cqw">Soigner ceux qui <em>soignent</em>, jusqu'au pixel.</h1>
+    <p class="lede" style="margin-top:1cqw;margin-bottom:1.8cqw;max-width:62cqw">Chaque interaction a été repensée. Chaque mot relu. Le secret professionnel commence dans la couche de base de données. La bienveillance commence dans le vouvoiement.</p>
+
+      <div class="care-grid">
+        <div class="care-cell">
+          <div class="n">/ RGPD · Article 17</div>
+          <h4>Droit à l'oubli livré</h4>
+          <p>Edge Function <code>delete-user</code>. Cascade ordonnée sur 5 tables + auth.users.</p>
+          <div class="stat">117 lignes · TypeScript</div>
+        </div>
+        <div class="care-cell">
+          <div class="n">/ RGPD · Article 20</div>
+          <h4>Portabilité livrée</h4>
+          <p>Export JSON structuré : profil, quiz, lectures, progression, checklist.</p>
+          <div class="stat">86 lignes · 5 tables</div>
+        </div>
+        <div class="care-cell">
+          <div class="n">/ Code défensif</div>
+          <h4>5 sanitizers · 4 regex</h4>
+          <p>Email, password, phone, RPPS. Retry exponentiel 1→2→4 s. Timeout 15 s.</p>
+          <div class="stat">16 erreurs traduites en FR</div>
+        </div>
+        <div class="care-cell">
+          <div class="n">/ Vouvoiement</div>
+          <h4>38 + 25 fixes</h4>
+          <p>Phases 2 et 4 : harmonisation systématique du langage sur toute l'app.</p>
+          <div class="stat">— jamais on tutoie un confrère</div>
+        </div>
+        <div class="care-cell">
+          <div class="n">/ Sons & animations</div>
+          <h4>3 Lottie · 4 sons</h4>
+          <p>tap · xp-gain · level-up · success. Volumes gradués de 0,2 à 0,4. Embarqués localement.</p>
+          <div class="stat">177 Ko · zéro CDN</div>
+        </div>
+        <div class="care-cell">
+          <div class="n">/ Accessibilité</div>
+          <h4>useReducedMotion · WCAG AA</h4>
+          <p>Labels et roles sur 9 fichiers. SafeArea sur 12 écrans. Cibles tactiles 44 px.</p>
+          <div class="stat">contraste 7:1 sur primaire</div>
+        </div>
+      </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>11 / 13 · L'attention</div>
+  </div>
+</section>
+
+<!-- ============ 11 — COMMUNAUTÉ ============ -->
+<section class="slide s-com" data-title="Communauté">
+  <div class="grain"></div>
+  <img class="com-logo" src="assets/logo.png" alt="" aria-hidden="true">
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>12 — Les nôtres</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">12 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">À qui on s'adresse</span>
+    <h1>On parle aux <em>kinés</em>.<br>À tous les kinés.</h1>
+    <p class="lede">Étudiants en IFMK, équivalents en démarche DREETS, libéraux installés, salariés en cabinet. Et ceux qui pensent à les rejoindre — l'ordre, les syndicats, les écoles.</p>
+
+    <div class="aud-grid">
+      <div class="aud">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M 16 3 L 28 9 L 16 15 L 4 9 Z"/>
+          <path d="M 6 12 V 22 L 16 28 L 26 22 V 12"/>
+        </svg>
+        <span class="who">/ Étudiants</span>
+        <h4>49 <em>IFMK</em></h4>
+        <p>Trois mille deux cents nouveaux étudiants chaque année. Quatre années de cursus.</p>
+        <div class="num">12 800</div>
+      </div>
+      <div class="aud">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="8" width="24" height="20" rx="1.5"/>
+          <path d="M 4 14 H 28"/>
+          <circle cx="10" cy="11" r="1" fill="currentColor"/>
+          <path d="M 12 4 L 16 8 L 20 4"/>
+        </svg>
+        <span class="who">/ En équivalence</span>
+        <h4>Le <em>parcours</em><br>DREETS.</h4>
+        <p>Diplômés à l'étranger qui veulent exercer en France. La démarche prend des mois — Leviup les accompagne pas à pas.</p>
+        <div class="num">5 pays</div>
+      </div>
+      <div class="aud">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="16" cy="16" r="12"/>
+          <path d="M 16 4 V 16 L 24 22"/>
+        </svg>
+        <span class="who">/ Libéraux</span>
+        <h4>104 000 <em>kinés</em></h4>
+        <p>En exercice en France. Quatre-vingt-cinq pour cent en libéral. Quatorze heures de DPC obligatoires par an.</p>
+        <div class="num">+3 000/an</div>
+      </div>
+      <div class="aud">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M 4 26 V 14 L 16 6 L 28 14 V 26"/>
+          <rect x="13" y="18" width="6" height="8"/>
+          <path d="M 4 26 H 28"/>
+        </svg>
+        <span class="who">/ Institutions</span>
+        <h4>Ordre <em>&amp; syndicats</em></h4>
+        <p>FFMKR, SNMKR, ANDPC, Ordre. Notre légitimité se construit avec eux — pas contre eux.</p>
+        <div class="num">à embarquer</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup</span></div>
+    <div>12 / 13 · Les nôtres</div>
+  </div>
+</section>
+
+<!-- ============ 12 — CONCLUSION ============ -->
+<section class="slide s-end" data-title="Rejoignez-nous">
+  <div class="grain"></div>
+  <svg class="end-anat"><use href="#anat-spine"/></svg>
+  <div class="chrome">
+    <div class="left"><span class="dot"></span><span>13 — L'invitation</span></div>
+    <div class="rule"></div>
+    <div class="right"><span class="num">13 / 13</span></div>
+  </div>
+
+  <div class="body-region">
+    <span class="kicker">L'invitation</span>
+    <h1 class="end-h disp">
+      Rejoignez-nous au<br>
+      <em>début</em> de quelque<br>
+      chose <u>qui dure</u>.
+    </h1>
+
+    <div class="end-doors">
+      <div class="door">
+        <span class="n">/ Porte 1</span>
+        <h4>Devenez <em>kiné-testeur</em></h4>
+        <p>Quinze minutes par semaine, retours bruts attendus. La cohorte pilote ouvre en juin.</p>
+      </div>
+      <div class="door">
+        <span class="n">/ Porte 2</span>
+        <h4>Ouvrez Leviup à votre <em>IFMK</em></h4>
+        <p>Présentation aux étudiants, accès campus, retours pédagogiques. Trois écoles cherchées.</p>
+      </div>
+      <div class="door">
+        <span class="n">/ Porte 3</span>
+        <h4>Parrainez un <em>confrère</em></h4>
+        <p>Le métier se transmet d'abord par les pairs. Une recommandation pèse plus qu'une publicité.</p>
+      </div>
+    </div>
+
+    <div class="end-sign">
+      <div class="quote">« On a fait du DPC une corvée triennale. On peut en faire un rituel quotidien — et c'est par là qu'on transforme un métier. »</div>
+      <div class="signature">
+        Leviup · Mai 2026
+        <b>contact@leviup.fr</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="brand"><span class="mark"></span><span>Leviup · Manifeste · fin</span></div>
+    <div>13 / 13 · Merci</div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<!-- TOC overlay -->
+<div id="toc">
+  <h2>Sommaire</h2>
+  <ol id="toc-list"></ol>
+</div>
+
+<div id="hint">← / → · espace · F plein écran · T sommaire</div>
+
+<nav id="controls">
+  <button id="prev">← Préc</button>
+  <span class="counter" id="counter">01 / 13</span>
+  <button id="next">Suiv →</button>
+  <span class="title" id="curr-title">Manifeste</span>
+</nav>
+
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const currTitle = document.getElementById('curr-title');
+  const progress = document.getElementById('progress');
+  const toc = document.getElementById('toc');
+  const tocList = document.getElementById('toc-list');
+  let idx = 0;
+
+  slides.forEach((s, i) => {
+    const t = s.dataset.title || ('Slide ' + (i+1));
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="nm">${String(i+1).padStart(2,'0')}</span><span>${t}</span><span class="ck">→</span>`;
+    li.addEventListener('click', () => { go(i); toggleToc(false); });
+    tocList.appendChild(li);
+  });
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function update(){
+    slides.forEach((s,i)=>s.classList.toggle('is-active', i===idx));
+    counter.textContent = `${pad(idx+1)} / ${pad(slides.length)}`;
+    currTitle.textContent = slides[idx].dataset.title;
+    progress.style.width = `${((idx+1)/slides.length)*100}%`;
+    history.replaceState(null,'',`#${idx+1}`);
+  }
+  function go(i){ idx = Math.max(0, Math.min(slides.length-1, i)); update(); }
+  function next(){ go(idx+1) }
+  function prev(){ go(idx-1) }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  function toggleToc(force){
+    const willOpen = typeof force==='boolean' ? force : !toc.classList.contains('open');
+    toc.classList.toggle('open', willOpen);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (toc.classList.contains('open')) {
+      if (e.key === 'Escape' || e.key === 't' || e.key === 'T') toggleToc(false);
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(slides.length-1);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+    else if (e.key === 't' || e.key === 'T') toggleToc();
+    else if (/^[0-9]$/.test(e.key)) {
+      const n = parseInt(e.key,10);
+      if (n === 0) go(9);
+      else go(n-1);
+    }
+  });
+
+  toc.addEventListener('click', (e) => { if (e.target === toc) toggleToc(false); });
+
+  function syncFromHash(){
+    const hashN = parseInt((location.hash||'').replace('#',''), 10);
+    if (hashN >= 1 && hashN <= slides.length) idx = hashN - 1;
+  }
+  syncFromHash();
+  window.addEventListener('hashchange', () => { syncFromHash(); update(); });
+  update();
+})();
+</script>
+</body>
+</html>
